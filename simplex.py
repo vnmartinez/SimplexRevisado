@@ -226,6 +226,7 @@ def main():
             print("No existe solucion Factible, z = 0")
 
 main()
+wait = input("Presiona cualquier tecla para finalzar.")
 
 
 
