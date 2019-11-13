@@ -1,5 +1,6 @@
 import numpy as np
 import sys
+import re
 
 
 
@@ -21,15 +22,42 @@ def readInput(inputName):
         y=0
         while y < len(x):    
             if(x[y] == "-"):
-                string =int(x[y]+x[y+1])
-                arr[row].append(string)
+                string =x[y]+x[y+1]
+                if(not re.match('^[-+]?[0-9]+$',string)):
+                    print("Formato de entrada incorrecto \n" ," caracter invalido encontrado : ",string )
+                    print("Por favor verifique el archivo input.txt")
+                    sys.exit()
+                arr[row].append(int(string))
                 y = y+1   
             elif(x[y] != "-" and x[y] != " " and x[y] != "\n"):
+                if(not re.match('^[-+]?[0-9]+$',x[y])):
+                    print("Formato de entrada incorrecto \n" ," caracter invalido encontrado : ",x[y] )
+                    print("Por favor verifique el archivo input.txt")
+                    sys.exit()
                 arr[row].append(int(x[y]))
             y = y +1            
         row = row + 1
+    print(arr)
+    if(not comprobarDimensiones(arr)):
+        print("Las matriz no tiene todos sus coeficientes")
+        print("Por favor verifique el archivo input.txt")
+        sys.exit()
+    
     return arr
-      
+
+def comprobarDimensiones(matrix):
+    flag = True
+    error = 1
+    aux = len(matrix[0])
+    for x in matrix:
+        if(len(x) != aux):
+            flag = False
+            break
+        error = error + 1
+    if (not flag):
+        print("Primer error en la fila: ",error)
+    return flag
+    
 # Este metodo determinara en que columnas se encuentran las variables en forma canonica factible
 # En caso de no encontrarse en FCF se le notificara al usuario y se terminara la ejecucion del programa 
 # Retornara un arreglo indicando cuales son nuestras variables basicas iniciales
@@ -157,8 +185,10 @@ def createB_inverse(B_inverse,P):
     return result
 
 def main():
+    print("Metodo Simplex Revisado \n \n")
     problem = np.array(readInput("input.txt")) 
     ## Primera iteracion 
+    print("Problema Inicial = ")
     print(problem)
     A = problem[0:(problem.shape[0] - 1):, 0:(problem.shape[1] - 1)].copy() #Matriz A 
     print("A = ")
@@ -217,9 +247,10 @@ def main():
 
     # cumplida la condicion encontraremos la SBF
     if(control == True):
-        print("Solucion Optima")
+        print("\n \n Solucion Optima")
         b_barra = np.dot(B_inverse,b)
-        print("b_barra = ", b_barra)
+        print("b_barra = ")
+        print(b_barra)
         z_result  = np.dot(pi_z,b)
         print("z = ", z_result)
         if z_result==0:
