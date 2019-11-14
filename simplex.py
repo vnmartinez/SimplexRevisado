@@ -26,6 +26,7 @@ def readInput(inputName):
                 if(not re.match('^[-+]?[0-9]+$',string)):
                     print("Formato de entrada incorrecto \n" ," caracter invalido encontrado : ",string )
                     print("Por favor verifique el archivo input.txt")
+                    wait = input("Presiona cualquier tecla para finalzar.")
                     sys.exit()
                 arr[row].append(int(string))
                 y = y+1   
@@ -33,6 +34,7 @@ def readInput(inputName):
                 if(not re.match('^[-+]?[0-9]+$',x[y])):
                     print("Formato de entrada incorrecto \n" ," caracter invalido encontrado : ",x[y] )
                     print("Por favor verifique el archivo input.txt")
+                    wait = input("Presiona cualquier tecla para finalzar.")
                     sys.exit()
                 arr[row].append(int(x[y]))
             y = y +1            
@@ -41,6 +43,7 @@ def readInput(inputName):
     if(not comprobarDimensiones(arr)):
         print("Las matriz no tiene todos sus coeficientes")
         print("Por favor verifique el archivo input.txt")
+        wait = input("Presiona cualquier tecla para finalzar.")
         sys.exit()
     
     return arr
@@ -82,6 +85,7 @@ def calcularFCF(problem):
     aux = np.array(solution)
     if(len(aux) < problem.shape[0]-1):
         print("Este problema no se encuentra en forma basica factible")
+        wait = input("Presiona cualquier tecla para finalzar.")
         sys.exit()
     return aux
 
@@ -198,14 +202,10 @@ def main():
     print(b)
     c = problem[problem.shape[0] - 1,: problem.shape[1] - 1 ].copy() # Vector c (valores de z)
     print("c = ",c)
-    #B_aux = calcularFCF(problem) #Vector B_0
-    B_aux = [3, 2]
+    B_aux = calcularFCF(problem) #Vector B_0
     print("B = ", B_aux)
     B = crearB(A,B_aux)
-    #B_inverse =np.identity(problem.shape[0]-1)
-    B_inverse = np.array([[1, 0,],
-                        [0, 0.25],   
-                        ]) 
+    B_inverse =np.identity(problem.shape[0]-1)
 
 
     c_B = crearc_B(c,B_aux)
