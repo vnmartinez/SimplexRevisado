@@ -1,0 +1,35 @@
+Algoritmo Simplex Revisado 
+
+Integrantes:
+
+Daniel Marcelo Cifuentes de La Portilla
+Julie Vanessa Triviño Garcia
+Harold Nicolas Saavedra Alvarado
+Bryan Guzman Garcia
+
+Instrucciones de Uso:
+
+1. Abra el archivo input.txt
+
+2. Una vez ahi ingrese los coeficientes del problema uno por uno separados por un espacio.
+Primero poniendo cada una de las ecuaciones y por ultimo la funcion a optimizar
+(Recuerde que el problema debe encontrarse en forma estandar y estar en Forma Canonica Factible)
+
+Ejemplo: Para el problema
+
+  X1  +   X2         +  X4         = 1
+-2X1  +   X2  +  X3                = 2
+ -X1  -  2X2                +  X5  = z(a min)
+
+La entrada a ingresar en el archivo sera la siguiente
+
+1 1 0 1 0 1
+-2 1 1 0 0 2
+-1 -2 0 0 1 1
+
+3. Ahora debemos ejecutar el script simplex.py, esto podemos hacerlo desde consola
+ejecutando en el directorio el comando "python .\simplex.py" o simplemente abriendo el 
+fichero desde una shell de Python.
+
+4. Ahora se mostrara en consola El procedimiento ciclo a ciclo del algorimo, este se detendra al 
+encontrar una solucion basica factible o al determinar que el problema no la tiene.

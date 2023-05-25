@@ -2,13 +2,10 @@ import numpy as np
 import sys
 import re
 
+# Obter colunas problema[:,#coluna]
+# Obter fila problema[#fila, :]
 
-
-# Obtener columnas problem[:,#columna]
-# Obtener fila problem[#fila, :]
-
-
-# Leemos el arhivo de entrada para crear asi la matriz con los coficientes del problema
+# lemos o arquivo de entrada para criar a matriz com os coeficientes do problema
 def readInput(inputName):
     arr = []
     f = open (inputName,"r")
@@ -24,31 +21,31 @@ def readInput(inputName):
             if(x[y] == "-"):
                 string =x[y]+x[y+1]
                 if(not re.match('^[-+]?[0-9]+$',string)):
-                    print("Formato de entrada incorrecto \n" ," caracter invalido encontrado : ",string )
-                    print("Por favor verifique el archivo input.txt")
-                    wait = input("Presiona cualquier tecla para finalzar.")
+                    print("Formato de entrada incorreto \n" ," caractere invalido encontrado : ",string )
+                    print("Por favor verifique o arquivo input.txt")
+                    wait = input("Pressione qualquer tecla para finalizar.")
                     sys.exit()
                 arr[row].append(int(string))
                 y = y+1   
             elif(x[y] != "-" and x[y] != " " and x[y] != "\n"):
                 if(not re.match('^[-+]?[0-9]+$',x[y])):
-                    print("Formato de entrada incorrecto \n" ," caracter invalido encontrado : ",x[y] )
-                    print("Por favor verifique el archivo input.txt")
-                    wait = input("Presiona cualquier tecla para finalzar.")
+                    print("Formato de entrada incorreto \n" ," caractere invalido encontrado : ",x[y] )
+                    print("Por favor verifique o arquivo input.txt")
+                    wait = input("Pressione qualquer tecla para finalizar.")
                     sys.exit()
                 arr[row].append(int(x[y]))
             y = y +1            
         row = row + 1
     print(arr)
-    if(not comprobarDimensiones(arr)):
-        print("Las matriz no tiene todos sus coeficientes")
-        print("Por favor verifique el archivo input.txt")
-        wait = input("Presiona cualquier tecla para finalzar.")
+    if(not comprovarDimensoes(arr)):
+        print("A matriz não possui os coeficientes")
+        print("Por favor verifique o arquivo input.txt")
+        wait = input("Pressione qualquer tecla para finalizar.")
         sys.exit()
     
     return arr
 
-def comprobarDimensiones(matrix):
+def comprovarDimensoes(matrix):
     flag = True
     error = 1
     aux = len(matrix[0])
@@ -58,24 +55,24 @@ def comprobarDimensiones(matrix):
             break
         error = error + 1
     if (not flag):
-        print("Primer error en la fila: ",error)
+        print("Primeiro Erro na linha: ",error)
     return flag
     
-# Este metodo determinara en que columnas se encuentran las variables en forma canonica factible
-# En caso de no encontrarse en FCF se le notificara al usuario y se terminara la ejecucion del programa 
-# Retornara un arreglo indicando cuales son nuestras variables basicas iniciales
+# Este método irá determinar em quais colunas as variáveis ​​são encontradas na forma canônica factível
+# Caso não seja encontrado no FCF, o usuário será notificado e a execução do programa será encerrada
+# Irá retornar um array indicando quais são nossas variáveis ​​básicas iniciais
 def calcularFCF(problem): 
-    filas = problem.shape[0]
-    columnas = problem.shape[1]-1
+    linhas = problem.shape[0]
+    colunas = problem.shape[1]-1
     flags = []
     solution = []
-    for x in range (0,columnas):
+    for x in range (0,colunas):
         flags.append(True)
-    for n in range(0,filas-1):
-        for m in range(0,columnas):
+    for n in range(0,linhas-1):
+        for m in range(0,colunas):
             if(flags[m]):
                 if(problem[n][m]== 1):
-                    for i in range (n+1,filas):
+                    for i in range (n+1,linhas):
                         if(problem[i][m] != 0):
                             flags[m] = False
                     if( flags[m] ): 
@@ -84,12 +81,12 @@ def calcularFCF(problem):
                     flags[m] = False
     aux = np.array(solution)
     if(len(aux) < problem.shape[0]-1):
-        print("Este problema no se encuentra en forma basica factible")
-        wait = input("Presiona cualquier tecla para finalzar.")
+        print("Esse problema não se encontra solução básica factível")
+        wait = input("Pressione qualquer tecla para finalizar.")
         sys.exit()
     return aux
 
-# En este metodo se creara la matriz B apartir de las variables basicas ya definidas
+# Neste método se cria a matriz B a partir das soluções máximas factíveis
 def crearB(A,B_aux):
     B = np.zeros((A.shape[0] ,len(B_aux)))
     for x in range(0,len(B_aux)):
@@ -98,7 +95,7 @@ def crearB(A,B_aux):
     print("B = ")
     print (B)
     return B
-#En este metodo se declara el vector c sub B
+#Neste método se declara o vetor C 
 def crearc_B(c,B_aux):
     values=[]
     for x in range(0,len(B_aux)):
@@ -107,7 +104,7 @@ def crearc_B(c,B_aux):
     print("c_B = ",c_B)
     return c_B
 
-#En este metodo se comprobara si todos los c sub j son mayores a cero
+#Neste método será verificado se todos os c sub j são maiores que zero
 def comprobar(c_barra):
     flag = True
     for x in range(0,len(c_barra)):
@@ -119,8 +116,8 @@ def comprobar(c_barra):
         print("Almenos un c_j no es mayor a cero")
     return flag
 
-# En este metodo calculamos cual sera la columna pivote
-# retornamos el valor de s
+# Nesse método calculamos qual será a coluna pivô
+# retorna o valor de s
 def minCol(c_barra):
     tocompare = []
     for x in range(0,len(c_barra)):
@@ -132,10 +129,10 @@ def minCol(c_barra):
     return index
 
 
-# En este metodo calculamos cual sera la fila pivote
-# retornamos el valor de r
-# En caso de no existir A_s's mayores a cero se
-# determinara que no existe una solicion factible
+# Neste método calculamos qual será a linha pivô
+# retorna o valor de r
+# Se não houver A_s's maiores que zero,
+# determina que não há solução factível
 def minFila(b,A_sBarra,col):  
     global control
     b = b.reshape(1,len(A_sBarra)) 
@@ -150,18 +147,17 @@ def minFila(b,A_sBarra,col):
     else:
         min_f = np.amin(tocompare)
         index =list(tocompare).index(min_f)
-        print("La fila pivote se ha calculado r = ",index)
+        print("A linha pivô foi calculada r = ",index)
         return index
 
-#este metodo actualiza las variables basicas apartir de la fila y columna pivote 
-def replaceB(B_aux,VB,VNB):
-    print("La variable A",VB," entra a B")
-    print("La variable A",B_aux[VNB]," sale de B")
+#este método atualiza as variáveis ​​básicas da linha e coluna pivôdef replaceB(B_aux,VB,VNB):
+    print("A variavel A",VB," entra em B")
+    print("A variavel A",B_aux[VNB]," sai de B")
     B_aux[VNB] = VB
     print("B = ",B_aux)
     return B_aux
 
-# Se crea el vector columna P^s
+# O vetor coluna P^s é criado
 def createP_s(a_rs,A_s,col):
     result = []
     for x in range(0,len(A_s)):
@@ -173,7 +169,7 @@ def createP_s(a_rs,A_s,col):
     print("P_s = ",aux)
     return aux
 
-# Se crea la matriz P apartir de una matriz identidad y el vector P^s
+# A matriz P é criada a partir de uma matriz identidade e do vetor P^s
 def createP(P_s,minFila): 
      result = np.identity(len(P_s))
      result[:, minFila] = P_s
@@ -191,18 +187,18 @@ def createB_inverse(B_inverse,P):
 def main():
     print("Metodo Simplex Revisado \n \n")
     problem = np.array(readInput("input.txt")) 
-    ## Primera iteracion 
+    ## Primeira iteração
     print("Problema Inicial = ")
     print(problem)
     A = problem[0:(problem.shape[0] - 1):, 0:(problem.shape[1] - 1)].copy() #Matriz A 
     print("A = ")
     print(A)
-    b = problem[0:(problem.shape[0] - 1):,(problem.shape[1] - 1)].copy().reshape(problem.shape[0] - 1,1) # Vector b (coeficientes)
+    b = problem[0:(problem.shape[0] - 1):,(problem.shape[1] - 1)].copy().reshape(problem.shape[0] - 1,1) # Vetor b (coeficientes)
     print("b = ")
     print(b)
-    c = problem[problem.shape[0] - 1,: problem.shape[1] - 1 ].copy() # Vector c (valores de z)
+    c = problem[problem.shape[0] - 1,: problem.shape[1] - 1 ].copy() # Vetor c (valores de z)
     print("c = ",c)
-    B_aux = calcularFCF(problem) #Vector B_0
+    B_aux = calcularFCF(problem) #Vetor B_0
     print("B = ", B_aux)
     B = crearB(A,B_aux)
     B_inverse =np.identity(problem.shape[0]-1)
@@ -217,9 +213,8 @@ def main():
 
     numciclo = 1
     control = True
-
-    ##Ahora ejecutaremos ciclos hasta que todos los c_j sean mayores a ceros
-    ## o encontremos que no existe una SBF
+    ##Agora vamos executar loops até que todos os c_j sejam maiores que zero
+    ## ou descobrimos que não há SBF
     while(not comprobar(c_barra) and control):
         print("")
         print("Ciclo numero ",numciclo)
@@ -245,9 +240,9 @@ def main():
         print("")
         print("")
 
-    # cumplida la condicion encontraremos la SBF
+# assim que a condição for satisfeita, encontraremos o SBF
     if(control == True):
-        print("\n \n Solucion Optima")
+        print("\n \n Soluçao Otima")
         b_barra = np.dot(B_inverse,b)
         print("b_barra = ")
         print(b_barra)
@@ -257,7 +252,7 @@ def main():
             print("No existe solucion Factible, z = 0")
 
 main()
-wait = input("Presiona cualquier tecla para finalzar.")
+wait = input("Pressione qualquer tecla para finalizar.")
 
 
 
